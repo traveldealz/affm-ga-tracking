@@ -115,7 +115,6 @@ class AffM_Tracking {
 				break;
 		}
 
-		$this->send_transaction( $subid );
 		$this->send_clickout_event( $subid );
 
 		var_dump($prli);
@@ -128,38 +127,6 @@ class AffM_Tracking {
 	private static function get_new_subid() {
 		// PHP 7 only http://php.net/manual/en/function.random-bytes.php
 		return 'am' . bin2hex( random_bytes( 23 ) ); // = 48 Zeichen
-	}
-
-	private function send_transaction( $subid ) {
-
-		// https://ga-dev-tools.appspot.com/hit-builder/
-
-		if ( ! $cliendId = $this->get_clientId() ) {
-			return false;
-		}
-
-		$sendtransaction = [
-			'v' => 1, // Protocol Version
-			'tid' => $this->ga_id, // Google Analytics ID
-			'cid' => $cliendId, //ClientId
-			't' => 'transaction',
-			'ti' => $subid, // Transaction ID: Subid
-			'tr' => '0.00', //Transaction Revenue
-			'dl' => $_SERVER["HTTP_REFERER"] ?: '', // Document location URL (from Referer)
-		];
-
-		var_dump( $sendtransaction );
-
-		$url = 'https://www.google-analytics.com/collect' . '?' . http_build_query( $sendtransaction );
-
-		$response = wp_remote_get( $url );
-		//$body = wp_remote_retrieve_body( $response );
-
-		if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
-			return false;
-		}
-
-		return true;
 	}
 
 	private function send_clickout_event( $subid ) {
