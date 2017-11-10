@@ -149,7 +149,7 @@ class AffM_Tracking {
 			'dl' => $_SERVER["HTTP_REFERER"] ?: '', // Document location URL (from Referer)
 		];
 
-		var_dump( $sendevent );
+		//var_dump( $sendevent );
 
 		$url = 'https://www.google-analytics.com/collect' . '?' . http_build_query( $sendevent );
 
