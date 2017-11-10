@@ -1,0 +1,19 @@
+{
+	"name": "jojojjjooo/affm-ga-tracking",
+	"description": "AffM Google Analytics Tracking",
+	"type": "wordpress-plugin",
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "http://wpackagist.org"
+		}
+	],
+	"require": {
+		"composer/installers": "^1.0"
+	},
+	"license": "GPL-2.0+",
+	"authors": [{
+		"name": "Johannes Kinast",
+		"email": "johannes@travel-dealz.de"
+	}]
+}
