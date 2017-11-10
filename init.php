@@ -43,7 +43,7 @@ class AffM_Tracking {
 		$networks = [
 			'affili.net' => 'partners.webmasterplan.com',
 			'zanox' => 'ad.zanox.com',
-			'awin' => 'awin1.com',
+			'awin' => 'www.awin1.com',
 			'webgains' => 'track.webgains.com',
 			'financeads' => 'www.financeads.net',
 			'phg' => 'prf.hn',
