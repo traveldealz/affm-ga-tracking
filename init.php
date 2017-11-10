@@ -12,25 +12,28 @@ Min WP Version: 2.5.3
 Max WP Version: 4.4
 */
 
-//add_action( 'plugins_loaded', array( 'AffM_Tracking', 'init' ) );
-//add_action('init', array('AffM_Tracking', 'init'));
 
-
-new AffM_Tracking();
+add_filter( 'prli_target_url', array( new AffM_Tracking, 'save_prli_clickout' ), 110 );
 
 class AffM_Tracking {
 
+	/**
+	 * Instance of the class
+	 *
+	 * @static
+	 * @var    object
+	 */
+	protected static $instance;
+
 	private $ga_id;
 
-	public function init() {
-
+	public static function init() {
+		null === self::$instance and self::$instance = new self;
+		return self::$instance;
 	}
 
 	public function __construct() {
 		$this->ga_id = 'UA-1896878-6'; // Später in Optionen sichern
-
-		add_filter( 'prli_target_url', array( $this, 'save_prli_clickout' ), 110 ); //priority has to be >99 to work with the feature "Target URL Rotation" of Prli Pro
-
 	}
 
 	public function save_prli_clickout( $prli ) {
@@ -117,14 +120,14 @@ class AffM_Tracking {
 
 		$this->send_clickout_event( $subid );
 
-		var_dump($prli);
-		exit();
+		//var_dump($prli);
+		//exit();
 
 		return $prli;
 
 	}
 
-	private static function get_new_subid() {
+	public static function get_new_subid() {
 		// PHP 7 only http://php.net/manual/en/function.random-bytes.php
 		return 'am' . bin2hex( random_bytes( 23 ) ); // = 48 Zeichen
 	}
