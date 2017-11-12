@@ -48,6 +48,7 @@ class AffM_Tracking {
 			'financeads' => 'www.financeads.net',
 			'phg' => 'prf.hn',
 			'belboon' => 'www1.belboon.de',
+			'tradedoubler' => 'clkde.tradedoubler.com',
 		];
 
 		if ( ! $network = array_search( $url["host"], $networks ) ) {
@@ -108,6 +109,20 @@ class AffM_Tracking {
 					[
 						'${0}affm=' . $subid . '&',
 						'${0}?affm=' . $subid,
+					],
+					$prli['url'],
+					1
+				);
+				break;
+			case 'tradedoubler':
+				$prli['url'] = preg_replace(
+					[
+						'/\&g=\d*/', // normal url structur
+						'/g\(\d*\)/', // url () structur
+					],
+					[
+						'${0}&epi2=' . $subid,
+						'${0}epi2(' . $subid . ')',
 					],
 					$prli['url'],
 					1
