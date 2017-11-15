@@ -43,15 +43,15 @@ class AffM_Tracking {
 		$networks = [
 			'affili.net' => 'partners.webmasterplan.com',
 			'zanox' => 'ad.zanox.com',
-			'awin' => 'www.awin1.com',
+			'awin' => 'awin1.com',
 			'webgains' => 'track.webgains.com',
-			'financeads' => 'www.financeads.net',
+			'financeads' => 'financeads.net',
 			'phg' => 'prf.hn',
 			'belboon' => 'www1.belboon.de',
 			'tradedoubler' => 'clkde.tradedoubler.com',
 		];
 
-		if ( ! $network = array_search( $url["host"], $networks ) ) {
+		if ( false === $network = array_search( str_replace( 'www.', '', $url["host"] ), $networks ) ) {
 			return $prli;
 		}
 
