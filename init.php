@@ -49,6 +49,10 @@ class AffM_Tracking {
 			'phg' => 'prf.hn',
 			'belboon' => 'www1.belboon.de',
 			'tradedoubler' => 'clkde.tradedoubler.com',
+			'adcell' => 'adcell.de',
+			'tradetracker' => 'tc.tradetracker.net',
+			'daisycon' => 'ds1.nl',
+			'shareasale' => 'shareasale.com',
 		];
 
 		if ( false === $network = array_search( str_replace( 'www.', '', $url["host"] ), $networks ) ) {
@@ -127,6 +131,34 @@ class AffM_Tracking {
 					$prli['url'],
 					1
 				);
+				break;
+			case 'adcell':
+				if ( strpos( $prli['url'], '/subId/' ) ) {
+					$prli['url'] = preg_replace( '/\/subId\/\w*/', '/subId/' . $subid, $prli['url'], 1 );
+				} else {
+					$prli['url'] = preg_replace( '/\/slotId\/\d*/', '${0}/subId/' . $subid, $prli['url'], 1 );
+				}
+				break;
+			case 'tradetracker':
+				if ( strpos( $prli['url'], '&r=' ) ) {
+					$prli['url'] = preg_replace( '/\&r=\w*/', '&r=' . $subid, $prli['url'], 1 );
+				} else {
+					$prli['url'] = preg_replace( '/\&a=\d*/', '${0}&r=' . $subid, $prli['url'], 1 );
+				}
+				break;
+			case 'daisycon':
+				if ( strpos( $prli['url'], '&ws3=' ) ) {
+					$prli['url'] = preg_replace( '/\&ws3=\w*/', '&ws3=' . $subid, $prli['url'], 1 );
+				} else {
+					$prli['url'] = preg_replace( '/\&li=\d*/', '${0}&ws3=' . $subid, $prli['url'], 1 );
+				}
+				break;
+			case 'shareasale':
+				if ( strpos( $prli['url'], '&afftrack=' ) ) {
+					$prli['url'] = preg_replace( '/\&afftrack=\w*/', '&afftrack=' . $subid, $prli['url'], 1 );
+				} else {
+					$prli['url'] = preg_replace( '/\&[Mm]=\d*/', '${0}&afftrack=' . $subid, $prli['url'], 1 );
+				}
 				break;
 			default:
 				return $prli;
