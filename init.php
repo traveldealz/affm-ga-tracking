@@ -73,7 +73,7 @@ class AffM_Tracking {
 				if ( strpos( $prli['url'], '&zpar3=' ) ) {
 					$prli['url'] = preg_replace( '/\&zpar3=\[\[\w*]]/', '&zpar3=[[' . $subid . ']]', $prli['url'], 1 );
 				} else {
-					$prli['url'] = preg_replace( '/\?\d*C\d*/', '${0}&zpar3=[[' . $subid . ']]', $prli['url'], 1 );
+					$prli['url'] = preg_replace( '/\?\w*/', '${0}&zpar3=[[' . $subid . ']]', $prli['url'], 1 );
 				}
 				break;
 			case 'awin':
