@@ -212,11 +212,11 @@ class AffM_Tracking {
 
 	private static function get_clientId() {
 		// https://stackoverflow.com/questions/42865307/how-to-gather-google-analytics-client-id-server-side-from-a-get-request
-		if ( ! $ga_cookie = $_COOKIE["_ga"] ) {
+		if ( ! isset( $_COOKIE["_ga"] ) ) {
 			return false;
 		}
 
-		return substr( $ga_cookie, 6);
+		return substr( $_COOKIE["_ga"], 6);
 
 	}
 
