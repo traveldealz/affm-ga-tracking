@@ -193,7 +193,7 @@ class AffM_Tracking {
 			'ec' => 'clickOut',
 			'ea' => 'transaction',
 			'el' => $subid, // Transaction ID: Subid
-			'dl' => $_SERVER["HTTP_REFERER"] ?: '', // Document location URL (from Referer)
+			'dl' => isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : '', // Document location URL (from Referer)
 		];
 
 		//var_dump( $sendevent );
