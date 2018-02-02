@@ -53,6 +53,8 @@ class AffM_Tracking {
 			'tradetracker' => 'tc.tradetracker.net',
 			'daisycon' => 'ds1.nl',
 			'shareasale' => 'shareasale.com',
+			'cj_1' => 'jdoqocy.com',
+			'cj_2' => 'anrdoezrs.net',
 		];
 
 		if ( false === $network = array_search( str_replace( 'www.', '', $url["host"] ), $networks ) ) {
@@ -158,6 +160,20 @@ class AffM_Tracking {
 					$prli['url'] = preg_replace( '/\&afftrack=\w*/', '&afftrack=' . $subid, $prli['url'], 1 );
 				} else {
 					$prli['url'] = preg_replace( '/\&[Mm]=\d*/', '${0}&afftrack=' . $subid, $prli['url'], 1 );
+				}
+				break;
+			case 'cj_1':
+				if ( strpos( $prli['url'], '?sid=' ) ) {
+					$prli['url'] = preg_replace( '/\?sid=\w*/', '?sid=' . $subid, $prli['url'], 1 );
+				} else {
+					$prli['url'] .= '?sid=' . $subid;
+				}
+				break;
+			case 'cj_2':
+				if ( strpos( $prli['url'], '/sid/' ) ) {
+					$prli['url'] = preg_replace( '/\/sid\/\w*/', '/sid/' . $subid, $prli['url'], 1 );
+				} else {
+					$prli['url'] = preg_replace( '/\/type\/dlg/', '${0}/sid/' . $subid, $prli['url'], 1 );
 				}
 				break;
 			default:
