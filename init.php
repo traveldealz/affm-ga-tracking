@@ -166,7 +166,7 @@ class AffM_Tracking {
 				if ( strpos( $prli['url'], '?sid=' ) ) {
 					$prli['url'] = preg_replace( '/\?sid=\w*/', '?sid=' . $subid, $prli['url'], 1 );
 				} else {
-					$prli['url'] .= '?sid=' . $subid;
+					$prli['url'] = preg_replace( '/-\d+$/', '${0}?sid=' . $subid, $prli['url'], 1 );
 				}
 				break;
 			case 'cj_2':
