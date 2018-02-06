@@ -55,6 +55,9 @@ class AffM_Tracking {
 			'shareasale' => 'shareasale.com',
 			'cj_1' => 'jdoqocy.com',
 			'cj_2' => 'anrdoezrs.net',
+			'cj_3' => 'tkqlhce.com',
+			'cj_4' => 'kqzyfj.com',
+			'cj_5' => 'dpbolvw.net',
 		];
 
 		if ( false === $network = array_search( str_replace( 'www.', '', $url["host"] ), $networks ) ) {
@@ -162,6 +165,9 @@ class AffM_Tracking {
 					$prli['url'] = preg_replace( '/\&[Mm]=\d*/', '${0}&afftrack=' . $subid, $prli['url'], 1 );
 				}
 				break;
+			case 'cj_3':
+			case 'cj_4':
+			case 'cj_5':
 			case 'cj_1':
 				if ( strpos( $prli['url'], '?sid=' ) ) {
 					$prli['url'] = preg_replace( '/\?sid=\w*/', '?sid=' . $subid, $prli['url'], 1 );
