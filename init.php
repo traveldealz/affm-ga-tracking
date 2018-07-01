@@ -176,11 +176,16 @@ class AffM_Tracking {
 				}
 				break;
 			case 'cj_2':
-				if ( strpos( $prli['url'], '/sid/' ) ) {
-					$prli['url'] = preg_replace( '/\/sid\/\w*/', '/sid/' . $subid, $prli['url'], 1 );
-				} else {
-					$prli['url'] = preg_replace( '/\/type\/dlg/', '${0}/sid/' . $subid, $prli['url'], 1 );
+				if ( strpos( $prli['url'], '/type/dlg/' ) ) {
+					if ( strpos( $prli['url'], '/sid/' ) ) {
+						$prli['url'] = preg_replace( '/\/sid\/\w*/', '/sid/' . $subid, $prli['url'], 1 );
+					} else {
+						$prli['url'] = preg_replace( '/\/type\/dlg/', '${0}/sid/' . $subid, $prli['url'], 1 );
+					}
+				} elseif ( strpos( $prli['url'], '/click-' ) && false === strpos( $prli['url'], '?sid=' ) ) {
+					$prli['url'] = preg_replace( '/\/click-\d+-\d+$/', '${0}?sid=' . $subid, $prli['url'], 1 );
 				}
+
 				break;
 			default:
 				return $prli;
