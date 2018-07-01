@@ -58,6 +58,7 @@ class AffM_Tracking {
 			'cj_3' => 'tkqlhce.com',
 			'cj_4' => 'kqzyfj.com',
 			'cj_5' => 'dpbolvw.net',
+			'financequality' => 'l.neqty.net',
 		];
 
 		if ( false === $network = array_search( str_replace( 'www.', '', $url["host"] ), $networks ) ) {
@@ -186,6 +187,11 @@ class AffM_Tracking {
 					$prli['url'] = preg_replace( '/\/click-\d+-\d+$/', '${0}?sid=' . $subid, $prli['url'], 1 );
 				}
 
+				break;
+			case 'financequality':
+				if ( false === strpos( $prli['url'], '&subid=' ) ) {
+					$prli['url'] = preg_replace( '/\?fq=\w*=/', '${0}&subid=' . $subid, $prli['url'], 1 );
+				}
 				break;
 			default:
 				return $prli;
