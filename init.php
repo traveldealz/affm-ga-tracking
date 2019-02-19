@@ -223,8 +223,8 @@ class AffM_Tracking {
 			'tid' => $this->ga_id, // Google Analytics ID
 			'cid' => $cliendId, //ClientId
 			't' => 'event',
-			'ec' => 'clickOut',
-			'ea' => 'transaction',
+			'ec' => 'Click',
+			'ea' => 'Link Click Affiliate',
 			'el' => $subid, // Transaction ID: Subid
 			'dl' => isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : '', // Document location URL (from Referer)
 		];
