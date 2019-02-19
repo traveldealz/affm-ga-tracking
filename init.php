@@ -229,16 +229,11 @@ class AffM_Tracking {
 			'dl' => isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : '', // Document location URL (from Referer)
 		];
 
-		//var_dump( $sendevent );
-
 		$url = 'https://www.google-analytics.com/collect' . '?' . http_build_query( $sendevent );
 
-		$response = wp_remote_get( $url );
-		//$body = wp_remote_retrieve_body( $response );
-
-		if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
-			return false;
-		}
+		$response = wp_remote_get( $url, [
+			'blocking' => false,
+		] );
 
 		return true;
 	}
