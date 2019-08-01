@@ -25,7 +25,7 @@ class AffM_Tracking {
 	 */
 	protected static $instance;
 
-	private $ga_id;
+	private $ga_id, $matomo_id, $matomo_url;
 
 	public static function init() {
 		null === self::$instance and self::$instance = new self;
@@ -33,7 +33,9 @@ class AffM_Tracking {
 	}
 
 	public function __construct() {
-		$this->ga_id = 'UA-1896878-6'; // Später in Optionen sichern
+		$this->ga_id = get_option( 'affm_ga_id' ); // 'UA-1896878-6'; // Später in Optionen sichern
+		$this->matomo_id = get_option( 'affm_matomo_id' ); //2;
+		$this->matomo_url = get_option( 'affm_matomo_url' ); //'https://analytics.travel-dealz.eu';
 	}
 
 	public function save_prli_clickout( $prli ) {
@@ -198,10 +200,15 @@ class AffM_Tracking {
 				break;
 		}
 
-		$this->send_clickout_event( $subid );
+		if ( $this->ga_id ) {
+			$this->send_clickout_event_ga( $subid );
+		}
+		if ( $this->matomo_id ) {
+			$this->send_clickout_event_matomo( $subid );
+		}
 
-		//var_dump($prli);
-		//exit();
+		// var_dump($prli);
+		// exit();
 
 		return $prli;
 
@@ -212,9 +219,9 @@ class AffM_Tracking {
 		return 'am' . bin2hex( random_bytes( 23 ) ); // = 48 Zeichen
 	}
 
-	private function send_clickout_event( $subid ) {
+	private function send_clickout_event_ga( $subid ) {
 
-		if ( ! $cliendId = $this->get_clientId() ) {
+		if ( ! $cliendId = $this->get_ga_clientId() ) {
 			return false;
 		}
 
@@ -238,13 +245,55 @@ class AffM_Tracking {
 		return true;
 	}
 
-	private static function get_clientId() {
+	private static function get_ga_clientId() {
 		// https://stackoverflow.com/questions/42865307/how-to-gather-google-analytics-client-id-server-side-from-a-get-request
 		if ( ! isset( $_COOKIE["_ga"] ) ) {
 			return false;
 		}
 
 		return substr( $_COOKIE["_ga"], 6);
+
+	}
+
+	private function send_clickout_event_matomo( $subid ) {
+
+		if ( ! $cliendId = $this->get_matomo_clientId() ) {
+			return false;
+		}
+
+		$sendevent = [
+			'apiv' => 1, // Protocol Version
+			'rec' => 1, // Record on
+			'idsite' => $this->matomo_id, // Matomo SiteId ID
+			'_id' => $cliendId, // ClientId
+			'url' => isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : '', // Document location URL (from Referer)
+			'idgoal' => 0, // ecommerce interaction
+			'ec_id' => $subid, // Transaction ID: Subid
+		];
+
+		$url = $this->matomo_url . '/piwik.php' . '?' . http_build_query( $sendevent );
+
+		$response = wp_remote_get( $url, [
+			'blocking' => false,
+		] );
+
+		return true;
+	}
+
+	private function get_matomo_clientId() {
+
+		if ( ! is_array( $_COOKIE ) ) {
+            return false;
+		}
+
+		foreach ( $_COOKIE as $key => $value ) {
+			if ( false !== strpos( $key, '_pk_id_' . $this->matomo_id ) ) {
+				$items = explode( '.', $value );
+				return $items[0] ?? false;
+			}
+		}
+
+		return false;
 
 	}
 
