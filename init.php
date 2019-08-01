@@ -269,6 +269,7 @@ class AffM_Tracking {
 			'url' => isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : '', // Document location URL (from Referer)
 			'idgoal' => 0, // ecommerce interaction
 			'ec_id' => $subid, // Transaction ID: Subid
+			'revenue' => 0,
 		];
 
 		$url = $this->matomo_url . '/piwik.php' . '?' . http_build_query( $sendevent );
