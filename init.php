@@ -25,20 +25,20 @@ class AffM_Tracking {
 	 */
 	protected static $instance;
 
-	private $ga_id, $matomo_id, $matomo_url;
-
 	public static function init() {
 		null === self::$instance and self::$instance = new self;
 		return self::$instance;
 	}
 
 	public function __construct() {
-		$this->ga_id = get_option( 'affm_ga_id' ); // 'UA-1896878-6'; // Später in Optionen sichern
-		$this->matomo_id = get_option( 'affm_matomo_id' ); //2;
-		$this->matomo_url = get_option( 'affm_matomo_url' ); //'https://analytics.travel-dealz.eu';
+
 	}
 
 	public function save_prli_clickout( $prli ) {
+
+		if ( ! isset( $_GET['subid'] ) ) {
+			return $prli;
+		}
 
 		$url = parse_url( $prli['url'] );
 
@@ -67,7 +67,7 @@ class AffM_Tracking {
 			return $prli;
 		}
 
-		$subid = $this->get_new_subid();
+		$subid = urlencode( (string) $_GET['subid'] );
 
 		switch ( $network ) {
 			case 'affili.net':
@@ -199,16 +199,6 @@ class AffM_Tracking {
 				return $prli;
 				break;
 		}
-
-		if ( $this->ga_id ) {
-			$this->send_clickout_event_ga( $subid );
-		}
-		if ( $this->matomo_id ) {
-			$this->send_clickout_event_matomo( $subid );
-		}
-
-		// var_dump($prli);
-		// exit();
 
 		return $prli;
 
