@@ -1,35 +1,20 @@
 <?php
 namespace AffM;
 
-if (!defined('ABSPATH')) die
-- - //no direct access
-//require_once( 'vendor/autoload.php' );
 require_once( 'src/subid.php' );
 
 use AffM\Subid;
 
 /*
-Plugin Name
-- - AffM Google Analytics Tracking
-Plugin URI
-- - https://affm.travel-dealz.de
-Description
-- - Google Analytics Tracking for AffM
-Version
-- - 1.0.0
-Author
-- - Johannes Kinast
-Author URI
-- - https://affm.travel-dealz.de
-Update Server
-- - http://travel-dealz.de/wp-content/download/wp/
-Min WP Version
-- - 2.5.3
-Max WP Version
-- - 4.4
-*/
-
-\add_filter( 'prli_target_url', 'Affm\save_prli_clickout', 110 );
+ * Plugin Name: AffM Google Analytics Tracking
+ * Plugin URI: https://affm.travel-dealz.de
+ * Description: Google Analytics Tracking for AffM
+ * Version: 2.0.0
+ * Author: Johannes Kinast
+ * Author URI: https://affm.travel-dealz.de
+ * Min WP Version: 2.5.3
+ * Max WP Version: 4.4
+ */
 
 function save_prli_clickout( $prli ) {
 
@@ -47,3 +32,4 @@ function save_prli_clickout( $prli ) {
 	return $prli;
 
 }
+add_filter( 'prli_target_url',  __NAMESPACE__ . '\save_prli_clickout', 110 );

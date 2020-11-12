@@ -1,15 +1,27 @@
 <?php
-require_once( 'vendor/autoload.php' );
-//require_once( realpath(dirname(__FILE__) .  '/../src/subid.php' ) );
-use PHPUnit\Framework\TestCase;
-use AffM\Subid;
+namespace AffM\Tests;
 
-final class AwinTest extends TestCase
-{
-    public function test_awin_url_gets_subid_attached()
-- - void
-    {
-		//$url = (new Subid)::add_subid_to_url( 'https://www.awin1.com/awclick.php?gid=323861&mid=9399&awinaffid=135115&linkid=2052012', 'am1564851476418786d1379025341db88f81ee5c788391b' );
-        //$this->assertEquals( 'https://www.awin1.com/awclick.php?gid=323861&mid=9399&awinaffid=135115&clickref2=am1564851476418786d1379025341db88f81ee5c788391b&linkid=2052012', $url );
-    }
+use PHPUnit\Framework\TestCase;
+use Affm\Subid;
+
+class AwinTest extends TestCase {
+
+	public function test_set_subid() {
+		$Subid = new Subid( 'https://www.awin1.com/cread.php?awinmid=10885&awinaffid=135115' );
+		$url = $Subid->add_subid('test123')->get();
+        $this->assertEquals( 'https://www.awin1.com/cread.php?awinmid=10885&awinaffid=135115&clickref2=test123', $url );
+	}
+
+	public function test_set_subid_with_deeplink() {
+		$Subid = new Subid( 'https://www.awin1.com/cread.php?awinmid=10885&awinaffid=135115&p=https%3A%2F%2Fwww.travelzoo.com%2Fde%2F' );
+		$url = $Subid->add_subid('test123')->get();
+        $this->assertEquals( 'https://www.awin1.com/cread.php?awinmid=10885&awinaffid=135115&clickref2=test123&p=https%3A%2F%2Fwww.travelzoo.com%2Fde%2F', $url );
+	}
+
+	public function test_existing_subid_will_not_be_overwritten() {
+		$Subid = new Subid( 'https://www.awin1.com/cread.php?awinmid=10885&awinaffid=135115&clickref2=test456&p=https%3A%2F%2Fwww.travelzoo.com%2Fde%2F' );
+		$url = $Subid->add_subid('test123')->get();
+        $this->assertEquals( 'https://www.awin1.com/cread.php?awinmid=10885&awinaffid=135115&clickref2=test456&p=https%3A%2F%2Fwww.travelzoo.com%2Fde%2F', $url );
+	}
+
 }
