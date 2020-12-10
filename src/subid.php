@@ -25,6 +25,7 @@ class Subid {
 		'kqzyfj.com' => 'cj',
 		'dpbolvw.net' => 'cj',
 		'l.neqty.net' => 'financequality',
+		'rover.ebay.com' => 'ebay',
 	];
 
 	public $network = '';
@@ -162,6 +163,11 @@ class Subid {
 					} else {
 						$this->url = preg_replace( '/\?/', '${0}smc3=' . $subid . '&', $this->url, 1 );
 					}
+				}
+				break;
+			case 'ebay':
+				if ( false === strpos( $this->url, 'customid=' ) ) {
+					$this->url = preg_replace( '/campid=\d+/', '${0}&customid=' . $subid, $this->url, 1 );
 				}
 				break;
 			default:
