@@ -18,7 +18,7 @@
 	}],
 	"autoload": {
 		"psr-4": {
-			"Affm\\": "src/"
+			"Affm\\": "src/Affm"
 		}
 	},
 	"autoload-dev": {
