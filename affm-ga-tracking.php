@@ -1,7 +1,7 @@
 <?php
 namespace AffM;
 
-require_once( 'src/Affm/subid.php' );
+require_once( 'src/Affm/Subid.php' );
 
 use AffM\Subid;
 
