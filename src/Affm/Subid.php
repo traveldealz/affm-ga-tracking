@@ -26,6 +26,9 @@ class Subid {
 		'dpbolvw.net' => 'cj',
 		'l.neqty.net' => 'financequality',
 		'rover.ebay.com' => 'ebay',
+		'pvn.saturn.de' => 'easyaffiliate',
+		'pvn.mediamarkt.de' => 'easyaffiliate',
+		'read.apartena.net' => 'easyaffiliate',
 	];
 
 	public $network = '';
@@ -168,6 +171,15 @@ class Subid {
 			case 'ebay':
 				if ( false === strpos( $this->url, 'customid=' ) ) {
 					$this->url = preg_replace( '/campid=\d+/', '${0}&customid=' . $subid, $this->url, 1 );
+				}
+				break;
+			case 'easyaffiliate':
+				if ( false === strpos( $this->url, 'subid=' ) ) {
+					if ( false === strpos( $this->url, '?' ) ) {
+						$this->url = $this->url . '?subid=' . $subid;
+					} else {
+						$this->url = preg_replace( '/\?/', '${0}subid=' . $subid . '&', $this->url, 1 );
+					}
 				}
 				break;
 			default:
