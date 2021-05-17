@@ -29,6 +29,7 @@ class Subid {
 		'pvn.saturn.de' => 'easyaffiliate',
 		'pvn.mediamarkt.de' => 'easyaffiliate',
 		'read.apartena.net' => 'easyaffiliate',
+		'go.linkwi.se' => 'linkwise',
 	];
 
 	public $network = '';
@@ -179,6 +180,15 @@ class Subid {
 						$this->url = $this->url . '?subid=' . $subid;
 					} else {
 						$this->url = preg_replace( '/\?/', '${0}subid=' . $subid . '&', $this->url, 1 );
+					}
+				}
+				break;
+			case 'linkwise':
+				if ( false === strpos( $this->url, 'subid5=' ) ) {
+					if ( false === strpos( $this->url, '?' ) ) {
+						$this->url = $this->url . '?subid5=' . $subid;
+					} else {
+						$this->url = preg_replace( '/\?/', '${0}subid5=' . $subid . '&', $this->url, 1 );
 					}
 				}
 				break;
