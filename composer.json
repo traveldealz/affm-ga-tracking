@@ -1,6 +1,6 @@
 {
 	"name": "traveldealz/affm-ga-tracking",
-	"description": "AffM Google Analytics Tracking",
+	"description": "AffM Subid Tracking",
 	"type": "wordpress-plugin",
 	"repositories": [
 		{
