@@ -30,6 +30,8 @@ class Subid {
 		'pvn.mediamarkt.de' => 'easyaffiliate',
 		'read.apartena.net' => 'easyaffiliate',
 		'go.linkwi.se' => 'linkwise',
+		'track.effiliation.com' => 'effiliation',
+		'tracking.publicidees.com' => 'timeone',
 	];
 
 	public $network = '';
@@ -189,6 +191,24 @@ class Subid {
 						$this->url = $this->url . '?subid5=' . $subid;
 					} else {
 						$this->url = preg_replace( '/\?/', '${0}subid5=' . $subid . '&', $this->url, 1 );
+					}
+				}
+				break;
+			case 'effiliation':
+				if ( false === strpos( $this->url, 'effi_id2=' ) ) {
+					if ( false === strpos( $this->url, '?' ) ) {
+						$this->url = $this->url . '?effi_id2=' . $subid;
+					} else {
+						$this->url = $this->url . '&effi_id2=' . $subid;
+					}
+				}
+				break;
+			case 'timeone':
+				if ( false === strpos( $this->url, 'cb=' ) ) {
+					if ( false === strpos( $this->url, '?' ) ) {
+						$this->url = $this->url . '?cb=' . $subid;
+					} else {
+						$this->url = $this->url . '&cb=' . $subid;
 					}
 				}
 				break;
