@@ -32,6 +32,7 @@ class Subid {
 		'go.linkwi.se' => 'linkwise',
 		'track.effiliation.com' => 'effiliation',
 		'tracking.publicidees.com' => 'timeone',
+		'campaign.mobility-ads.de' => 'coyotoaffiliate',
 	];
 
 	public $network = '';
@@ -210,6 +211,17 @@ class Subid {
 					} else {
 						$this->url = $this->url . '&cb=' . $subid;
 					}
+				}
+				break;
+			case 'coyotoaffiliate':
+				if ( false === str_contains( $this->url, 'subIdentifier=' ) ) {
+					if ( false === strpos( $this->url, '?' ) ) {
+						$this->url = $this->url . '?subIdentifier=' . $subid;
+					} else {
+						$this->url = $this->url . '&subIdentifier=' . $subid;
+					}
+				} else {
+					$this->url = preg_replace( '/subIdentifier=(?=\&|$)/', 'subIdentifier=' . $subid, $this->url, 1 );
 				}
 				break;
 			default:
