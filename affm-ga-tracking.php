@@ -70,10 +70,20 @@ class AffM_Autolink {
 
 		$host = parse_url( $url,  PHP_URL_HOST );
 		$host = str_replace( ['www.', 'wwws.'], '', $host );
+
+		if ( isset( $this->destinations[$host] ) ) {
+			return true;
+		}
+
 		$host_parts = explode( '.', $host );
+
+		if ( 3 > count($host_parts) ) {
+			return false;
+		}
+
 		$host_main = $host_parts[count($host_parts) - 2] . '.' . $host_parts[count($host_parts) - 1];
 
-		return ! isset( $this->destinations[$host] ) && ! isset( $this->destinations[$host_main] ) ? false : true;
+		return isset( $this->destinations[$host_main] );
 	}
 
 	public function get_affm_url( string $url): string {
