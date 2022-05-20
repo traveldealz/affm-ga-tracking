@@ -58,7 +58,7 @@ class AffM_Autolink {
 
 		}
 
-		$this->destinations =  array_flip($destinations);
+		$this->destinations =  array_flip((array) $destinations);
 
 	}
 
