@@ -40,7 +40,7 @@ class AffM_Autolink {
 
 	public function load_affm_destinations(): void {
 
-		if ( false || ( $destinations = get_transient( 'affm_destinations' ) ) ) {
+		if ( false === ( $destinations = get_transient( 'affm_destinations' ) ) ) {
 
 			$site_id = get_option('affm_site_id', 1);
 
