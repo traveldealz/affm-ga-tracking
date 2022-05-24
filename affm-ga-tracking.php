@@ -98,6 +98,10 @@ class AffM_Autolink {
 	public function check_match( array $match ): string {
 		$url = $match[1];
 
+		// Add target="_blank" if missing
+
+
+		// Check Link
 		if ( false === $this->check_link( $url ) ) {
 			return $match[0];
 		}
@@ -130,3 +134,48 @@ class AffM_Autolink {
 $Autolink = new AffM_Autolink;
 add_filter( 'the_content', [$Autolink, 'filter_the_content'], 10 );
 add_filter( 'prli_target_url',  [$Autolink, 'filter_prettylink'], 109 );
+
+class AffM_Target {
+
+	public string $domain;
+
+	public function __construct()
+	{
+		$this->domain = parse_url( get_site_url(),  PHP_URL_HOST );
+	}
+
+	public function check_match( array $match ): string {
+		$host = parse_url( $match[1],  PHP_URL_HOST );
+
+		if ( $host === $this->domain ) {
+			return $match[0];
+		}
+
+		if ( str_contains( $match[0], '_blank' ) ) {
+			return $match[0];
+		}
+
+		$count = 0;
+		$match[0] = preg_replace( '/target="[^"]+"/', 'target="_blank"', $match[0], 1, $count );
+
+		// if there is no target-paramter
+		if ( 0 === $count ) {
+			$match[0] = str_replace( 'href', 'target="_blank" href', $match[0] );
+		}
+
+		return $match[0];
+	}
+
+	public function filter_the_content( $content ) {
+
+		$content = preg_replace_callback(
+			'/<a[^>]+href="([^"]+)"[^>]*>/',
+			[$this, 'check_match'],
+			$content
+		);
+
+		return $content;
+	}
+}
+$Target = new AffM_Target;
+add_filter( 'the_content', [$Target, 'filter_the_content'], 10 );
