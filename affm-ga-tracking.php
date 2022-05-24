@@ -64,6 +64,10 @@ class AffM_Autolink {
 
 	public function check_link( string $url ): bool {
 
+		if ( str_contains($url, 'noaffm') ) {
+			return false;
+		}
+
 		if (! $this->destinations) {
 			$this->load_affm_destinations();
 		}
