@@ -147,7 +147,11 @@ class AffM_Target {
 	public function check_match( array $match ): string {
 		$host = parse_url( $match[1],  PHP_URL_HOST );
 
-		if ( ! $host || $host === $this->domain ) {
+		if ( ! $host ) {
+			return $match[0];
+		}
+
+		if ( $host === $this->domain && ! str_contains( $match[1], '/go/' ) ) {
 			return $match[0];
 		}
 
