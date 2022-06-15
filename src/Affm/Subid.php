@@ -33,6 +33,10 @@ class Subid {
 		'track.effiliation.com' => 'effiliation',
 		'tracking.publicidees.com' => 'timeone',
 		'campaign.mobility-ads.de' => 'coyotoaffiliate',
+		'go2.travel-dealz.de' => 'traveldealz',
+		'go2.travel-dealz.eu' => 'traveldealz',
+		'affm.travel-dealz.de' => 'traveldealz',
+		'affm.travel-dealz.eu' => 'traveldealz',
 	];
 
 	public $network = '';
@@ -222,6 +226,15 @@ class Subid {
 					}
 				} else {
 					$this->url = preg_replace( '/subIdentifier=(?=\&|$)/', 'subIdentifier=' . $subid, $this->url, 1 );
+				}
+				break;
+			case 'traveldealz':
+				if ( false === str_contains( $this->url, 'subid=' ) ) {
+					if ( false === strpos( $this->url, '?' ) ) {
+						$this->url = $this->url . '?subid=' . $subid;
+					} else {
+						$this->url = $this->url . '&subid=' . $subid;
+					}
 				}
 				break;
 			default:
