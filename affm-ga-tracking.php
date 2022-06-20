@@ -159,6 +159,10 @@ class AffM_Target {
 			return $match[0];
 		}
 
+		if ( str_contains( $match[0], 'onclick="' ) ) {
+			return $match[0];
+		}
+
 		$count = 0;
 		$match[0] = preg_replace( '/target="[^"]+"/', 'target="_blank"', $match[0], 1, $count );
 
