@@ -58,6 +58,9 @@ class Subid {
 		} elseif ( preg_match( '/\w+\.r\.\w+\.\w+\/ts\/i\d+\/tsc/', $this->url ) ) {
 			// Ingenious
 			$this->network = 'ingenious';
+		} elseif ( str_contains( $this->url, 'a_aid=' ) ) {
+			// PostAffiliatePro
+			$this->network = 'postaffiliatepro';
 		} else {
 			return $this;
 		}
@@ -226,6 +229,11 @@ class Subid {
 					}
 				} else {
 					$this->url = preg_replace( '/subIdentifier=(?=\&|$)/', 'subIdentifier=' . $subid, $this->url, 1 );
+				}
+				break;
+			case 'postaffiliatepro':
+				if ( false === str_contains( $this->url, 'subID2=' ) ) {
+					$this->url = $this->url . '&subID2=' . $subid;
 				}
 				break;
 			case 'traveldealz':
