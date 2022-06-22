@@ -98,13 +98,12 @@ class AffM_Autolink {
 	public function check_match( array $match ): string {
 		$url = $match[1];
 
-		// Add target="_blank" if missing
-
-
 		// Check Link
 		if ( false === $this->check_link( $url ) ) {
 			return $match[0];
 		}
+
+		$match[0] = str_replace( 'href', 'referrerpolicy="no-referrer-when-downgrade" href', $match[0] );
 
 		return str_replace( $url, $this->get_affm_url($url), $match[0] );
 	}
