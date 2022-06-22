@@ -90,9 +90,10 @@ class AffM_Autolink {
 		return isset( $this->destinations[$host_main] );
 	}
 
-	public function get_affm_url( string $url): string {
+	public function get_affm_url( string $url, string $referrer = null ): string {
 		$site_id = get_option('affm_site_id', 1);
-		return 'https://affm.travel-dealz.de/sites/' . $site_id . '/redirect?url=' . urlencode($url);
+		$referrer = $referrer ?: home_url( $_SERVER['REQUEST_URI'] );
+		return 'https://affm.travel-dealz.de/sites/' . $site_id . '/redirect?url=' . urlencode($url) . '&referrer=' .  urlencode( $referrer );
 	}
 
 	public function check_match( array $match ): string {
@@ -102,8 +103,6 @@ class AffM_Autolink {
 		if ( false === $this->check_link( $url ) ) {
 			return $match[0];
 		}
-
-		$match[0] = str_replace( 'href', 'referrerpolicy="no-referrer-when-downgrade" href', $match[0] );
 
 		return str_replace( $url, $this->get_affm_url($url), $match[0] );
 	}
@@ -122,7 +121,8 @@ class AffM_Autolink {
 	public function filter_prettylink(array $prli): array {
 
 		if ( $this->check_link( $prli['url'] ) ) {
-			$prli['url'] = $this->get_affm_url($prli['url']);
+			$referrer = $_SERVER['HTTP_REFERER'] ?? null;
+			$prli['url'] = $this->get_affm_url($prli['url'], $referrer);
 		}
 
 		return $prli;
