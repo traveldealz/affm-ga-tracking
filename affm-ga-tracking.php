@@ -38,6 +38,11 @@ class AffM_Autolink {
 
 	public array $destinations = [];
 
+	public array $blocklist = [
+		'pvn.mediamarkt.de',
+		'pvn.saturn.de',
+	];
+
 	public function load_affm_destinations(): void {
 
 		if ( false === ( $destinations = get_transient( 'affm_destinations' ) ) ) {
@@ -68,12 +73,16 @@ class AffM_Autolink {
 			return false;
 		}
 
+		$host = parse_url( $url,  PHP_URL_HOST );
+		$host = str_replace( ['www.', 'wwws.'], '', $host );
+
+		if ( in_array( $host, $this->blocklist ) ) {
+			return false;
+		}
+
 		if (! $this->destinations) {
 			$this->load_affm_destinations();
 		}
-
-		$host = parse_url( $url,  PHP_URL_HOST );
-		$host = str_replace( ['www.', 'wwws.'], '', $host );
 
 		if ( isset( $this->destinations[$host] ) ) {
 			return true;
