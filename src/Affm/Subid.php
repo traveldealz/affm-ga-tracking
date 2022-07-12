@@ -37,6 +37,7 @@ class Subid {
 		'go2.travel-dealz.eu' => 'traveldealz',
 		'affm.travel-dealz.de' => 'traveldealz',
 		'affm.travel-dealz.eu' => 'traveldealz',
+		'online.adservicemedia.dk' => 'adservice',
 	];
 
 	public $network = '';
@@ -234,6 +235,11 @@ class Subid {
 			case 'postaffiliatepro':
 				if ( false === str_contains( $this->url, 'subID2=' ) ) {
 					$this->url = $this->url . '&subID2=' . $subid;
+				}
+				break;
+			case 'adservice':
+				if ( false === str_contains( $this->url, 'sub2=' ) ) {
+					$this->url = $this->url . '&sub2=' . $subid;
 				}
 				break;
 			case 'traveldealz':
