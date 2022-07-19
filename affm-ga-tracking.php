@@ -141,6 +141,7 @@ class AffM_Autolink {
 }
 $Autolink = new AffM_Autolink;
 add_filter( 'the_content', [$Autolink, 'filter_the_content'], 10 );
+add_filter( 'term_description', [$Autolink, 'filter_the_content'], 10 );
 add_filter( 'prli_target_url',  [$Autolink, 'filter_prettylink'], 109 );
 
 class AffM_Target {
