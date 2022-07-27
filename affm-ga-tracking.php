@@ -161,7 +161,23 @@ class AffM_Target {
 			return $match[0];
 		}
 
-		if ( $host === $this->domain && ! str_contains( $match[1], '/go/' ) ) {
+		if (
+			$host === $this->domain
+			&& ! str_contains( $match[1], '/go/')
+			&& ! str_contains( $match[1], '/suche/')
+			&& ! str_contains( $match[1], '/search/')
+			&& ! str_contains( $match[1], '/flugsuche/')
+			&& ! str_contains( $match[1], '/flightsearch/')
+			&& ! str_contains( $match[1], '/flughotelsuche/')
+			&& ! str_contains( $match[1], '/hotelsuche/')
+			&& ! str_contains( $match[1], '/hotelsearch/')
+			&& ! str_contains( $match[1], '/mietwagensuche/')
+			&& ! str_contains( $match[1], '/rentalcarsearch/')
+			&& ! str_contains( $match[1], '/hotelsearch/')
+			&& ! str_contains( $match[1], '/buchen/')
+			&& ! str_contains( $match[1], '/book/')
+		) {
+
 			return $match[0];
 		}
 
