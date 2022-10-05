@@ -38,6 +38,7 @@ class Subid {
 		'affm.travel-dealz.de' => 'traveldealz',
 		'affm.travel-dealz.eu' => 'traveldealz',
 		'online.adservicemedia.dk' => 'adservice',
+		'digidip.net' => 'digidip',
 	];
 
 	public $network = '';
@@ -50,6 +51,8 @@ class Subid {
 	public function add_subid( string $subid ) {
 
 		$domain = str_replace( 'www.', '', $this->URL["host"] );
+
+		$domain = str_contains($domain, 'digidip.net') ? 'digidip.net' : $domain;
 
 		if ( isset( $this->networks[$domain] ) ) {
 			$this->network = $this->networks[$domain];
@@ -240,6 +243,15 @@ class Subid {
 			case 'adservice':
 				if ( false === str_contains( $this->url, 'sub2=' ) ) {
 					$this->url = $this->url . '&sub2=' . $subid;
+				}
+				break;
+			case 'digidip':
+				if ( false === str_contains( $this->url, 'ref=' ) ) {
+					if ( false === strpos( $this->url, '?' ) ) {
+						$this->url = $this->url . '?ref=' . $subid;
+					} else {
+						$this->url = $this->url . '&ref=' . $subid;
+					}
 				}
 				break;
 			case 'traveldealz':
