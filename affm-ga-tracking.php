@@ -69,7 +69,7 @@ class AffM_Autolink {
 
 	public function check_link( string $url ): bool {
 
-		if ( str_contains($url, 'noaffm') ) {
+		if ( str_contains($url, 'noaffm') || str_contains($url, 'mailto:') || str_contains($url, 'tel:') ) {
 			return false;
 		}
 
