@@ -53,15 +53,14 @@ class Subid {
 		$domain = str_replace( 'www.', '', $this->URL["host"] );
 
 		$domain = str_contains($domain, 'digidip.net') ? 'digidip.net' : $domain;
-		$domain = str_contains($this->url, 'amc=con.blbn.') ? 'belboon.com' : $domain;
 
 		if ( isset( $this->networks[$domain] ) ) {
 			$this->network = $this->networks[$domain];
 		} elseif ( preg_match( '/\w+\.\w+\.\w+\/c\/\d+\/\d+\/\d+/', $this->url ) ) {
 			// Impact Radius
 			$this->network = 'impact';
-		} elseif ( preg_match( '/\w+\.r\.\w+\.\w+\/ts\/i\d+\/tsc/', $this->url ) ) {
-			// Ingenious
+		} elseif (str_contains($this->url, 'amc=con.blbn.')) {
+			// Ingenious (Belboon)
 			$this->network = 'ingenious';
 		} elseif ( str_contains( $this->url, 'a_aid=' ) ) {
 			// PostAffiliatePro
@@ -89,15 +88,6 @@ class Subid {
 			case 'partnerize':
 				if ( false === strpos( $this->url, '/pubref:' ) ) {
 					$this->url = preg_replace( '/\/camref:\w*/', '${0}/pubref:' . $subid, $this->url, 1 );
-				}
-				break;
-			case 'belboon':
-				if ( false === str_contains( $this->url, 'smc3=' ) ) {
-					if ( false === strpos( $this->url, '?' ) ) {
-						$this->url = $this->url . '?smc3=' . $subid;
-					} else {
-						$this->url = $this->url . '&smc3=' . $subid;
-					}
 				}
 				break;
 			case 'tradedoubler':
@@ -171,11 +161,11 @@ class Subid {
 				}
 				break;
 			case 'ingenious':
-				if ( false === strpos( $this->url, 'smc3=' ) ) {
+				if ( false === str_contains( $this->url, 'smc3=' ) ) {
 					if ( false === strpos( $this->url, '?' ) ) {
 						$this->url = $this->url . '?smc3=' . $subid;
 					} else {
-						$this->url = preg_replace( '/\?/', '${0}smc3=' . $subid . '&', $this->url, 1 );
+						$this->url = $this->url . '&smc3=' . $subid;
 					}
 				}
 				break;
