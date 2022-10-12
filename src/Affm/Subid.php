@@ -39,6 +39,7 @@ class Subid {
 		'affm.travel-dealz.eu' => 'traveldealz',
 		'online.adservicemedia.dk' => 'adservice',
 		'digidip.net' => 'digidip',
+		'belboon.com' => 'belboon',
 	];
 
 	public $network = '';
@@ -49,10 +50,10 @@ class Subid {
 	}
 
 	public function add_subid( string $subid ) {
-
 		$domain = str_replace( 'www.', '', $this->URL["host"] );
 
 		$domain = str_contains($domain, 'digidip.net') ? 'digidip.net' : $domain;
+		$domain = str_contains($this->url, 'amc=con.blbn.') ? 'belboon.com' : $domain;
 
 		if ( isset( $this->networks[$domain] ) ) {
 			$this->network = $this->networks[$domain];
@@ -91,18 +92,13 @@ class Subid {
 				}
 				break;
 			case 'belboon':
-				$this->url = preg_replace(
-					[
-						'/\w*\.html\?/', // If there is already a parameter like ?deeplink
-						'/\w*\.html$/', // If there is no parameter after .html
-					],
-					[
-						'${0}affm=' . $subid . '&',
-						'${0}?affm=' . $subid,
-					],
-					$this->url,
-					1
-				);
+				if ( false === str_contains( $this->url, 'smc3=' ) ) {
+					if ( false === strpos( $this->url, '?' ) ) {
+						$this->url = $this->url . '?smc3=' . $subid;
+					} else {
+						$this->url = $this->url . '&smc3=' . $subid;
+					}
+				}
 				break;
 			case 'tradedoubler':
 				if ( false === strpos( $this->url, 'epi2' ) ) {
