@@ -9,7 +9,7 @@ use AffM\Subid;
  * Plugin Name: AffM Tracking
  * Plugin URI: https://affm.travel-dealz.de
  * Description: Link Tracking for AffM
- * Version: 3.0.1
+ * Version: 3.0.2
  * Author: Johannes Kinast
  * Author URI: https://affm.travel-dealz.de
  * Min WP Version: 2.5.3
