@@ -96,7 +96,15 @@ class AffM_Autolink {
 
 		$host_main = $host_parts[count($host_parts) - 2] . '.' . $host_parts[count($host_parts) - 1];
 
-		return isset( $this->destinations[$host_main] );
+		if ( isset( $this->destinations[$host_main] ) ) {
+			return true;
+		}
+
+		if ( 4 === count($host_parts) && isset( $this->destinations[$host_parts[1] . '.' . $host_parts[2] . '.' . $host_parts[3]] ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public function get_affm_url( string $url, string $referrer = null ): string {
@@ -177,7 +185,6 @@ class AffM_Target {
 			&& ! str_contains( $match[1], '/buchen/')
 			&& ! str_contains( $match[1], '/book/')
 		) {
-
 			return $match[0];
 		}
 
