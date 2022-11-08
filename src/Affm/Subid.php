@@ -40,6 +40,7 @@ class Subid {
 		'online.adservicemedia.dk' => 'adservice',
 		'digidip.net' => 'digidip',
 		'belboon.com' => 'belboon',
+		'action.metaffiliation.com' => 'kwanko',
 	];
 
 	public $network = '';
@@ -65,6 +66,9 @@ class Subid {
 		} elseif ( str_contains( $this->url, 'a_aid=' ) ) {
 			// PostAffiliatePro
 			$this->network = 'postaffiliatepro';
+		} elseif ( str_contains( $this->url, 'mclic=' ) || str_contains( $this->url, 'redir=' ) ) {
+			// Kwanko
+			$this->network = 'kwanko';
 		} else {
 			return $this;
 		}
@@ -237,6 +241,15 @@ class Subid {
 						$this->url = $this->url . '?ref=' . $subid;
 					} else {
 						$this->url = $this->url . '&ref=' . $subid;
+					}
+				}
+				break;
+			case 'kwanko':
+				if ( false === str_contains( $this->url, 'argsite=' ) ) {
+					if ( false === strpos( $this->url, '?' ) ) {
+						$this->url = $this->url . '?argsite=' . $subid;
+					} else {
+						$this->url = $this->url . '&argsite=' . $subid;
 					}
 				}
 				break;
