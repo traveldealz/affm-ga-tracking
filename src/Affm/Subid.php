@@ -253,6 +253,11 @@ class Subid {
 					}
 				}
 				break;
+			case 'adtraction':
+				if (false === str_contains($this->url, 'epi2=')) {
+					$this->url = $this->url . (str_contains( $this->url, '?' ) ? '&' : '?') . 'epi2=' . $subid;
+				}
+				break;
 			case 'traveldealz':
 				if ( false === str_contains( $this->url, 'subid=' ) ) {
 					if ( false === strpos( $this->url, '?' ) ) {
