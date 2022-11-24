@@ -41,6 +41,7 @@ class Subid {
 		'digidip.net' => 'digidip',
 		'belboon.com' => 'belboon',
 		'action.metaffiliation.com' => 'kwanko',
+		'ad.admitad.com' => 'admitad',
 	];
 
 	public $network = '';
@@ -256,6 +257,11 @@ class Subid {
 			case 'adtraction':
 				if (false === str_contains($this->url, 'epi2=')) {
 					$this->url = $this->url . (str_contains( $this->url, '?' ) ? '&' : '?') . 'epi2=' . $subid;
+				}
+				break;
+			case 'admitad':
+				if (false === str_contains($this->url, 'subid3=')) {
+					$this->url = $this->url . (str_contains( $this->url, '?' ) ? '&' : '?') . 'subid3=' . $subid;
 				}
 				break;
 			case 'traveldealz':
