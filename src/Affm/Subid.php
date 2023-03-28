@@ -42,6 +42,7 @@ class Subid {
 		'belboon.com' => 'belboon',
 		'action.metaffiliation.com' => 'kwanko',
 		'ad.admitad.com' => 'admitad',
+		'click.adrecord.com' => 'adrecord',
 	];
 
 	public $network = '';
@@ -262,6 +263,15 @@ class Subid {
 			case 'admitad':
 				if (false === str_contains($this->url, 'subid3=')) {
 					$this->url = $this->url . (str_contains( $this->url, '?' ) ? '&' : '?') . 'subid3=' . $subid;
+				}
+				break;
+			case 'adrecord':
+				if (false === str_contains($this->url, 'epi=')) {
+					if (str_contains($this->url, 'url=')) {
+						$this->url = str_replace('&url=', '&epi=' . $subid . '&url=', $this->url);
+					} else {
+						$this->url = $this->url . '&epi=' . $subid;
+					}
 				}
 				break;
 			case 'traveldealz':
