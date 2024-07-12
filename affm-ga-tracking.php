@@ -75,6 +75,9 @@ class AffM_Autolink {
 		}
 
 		$host = parse_url( $url,  PHP_URL_HOST );
+		if ( null === $host || false === $host ) {
+			return false;
+		}
 		$host = str_replace( ['www.', 'wwws.'], '', $host );
 
 		if ( in_array( $host, $this->blocklist ) ) {
