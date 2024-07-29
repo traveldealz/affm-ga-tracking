@@ -39,6 +39,8 @@ class Subid {
 		'affm.travel-dealz.de' => 'traveldealz',
 		'affm.travel-dealz.eu' => 'traveldealz',
 		'affm.travel-dealz.com' => 'traveldealz',
+		'kreuzfahrten.travel-dealz.de' => 'cruisecompass',
+		'cruises.travel-dealz.com' => 'cruisecompass',
 		'online.adservicemedia.dk' => 'adservice',
 		'digidip.net' => 'digidip',
 		'belboon.com' => 'belboon',
@@ -273,6 +275,15 @@ class Subid {
 						$this->url = str_replace('&url=', '&epi=' . $subid . '&url=', $this->url);
 					} else {
 						$this->url = $this->url . '&epi=' . $subid;
+					}
+				}
+				break;
+			case 'cruisecompass':
+				if ( false === str_contains( $this->url, 'subid=' ) ) {
+					if ( false === strpos( $this->url, '?' ) ) {
+						$this->url = $this->url . '?subid=' . $subid;
+					} else {
+						$this->url = $this->url . '&subid=' . $subid;
 					}
 				}
 				break;
