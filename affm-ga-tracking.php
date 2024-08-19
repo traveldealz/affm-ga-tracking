@@ -213,6 +213,10 @@ class AffM_Target {
 
 	public function filter_the_content( $content ) {
 
+		if (!is_singular() || is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+			return $content;
+		}
+
 		$content = preg_replace_callback(
 			'/<a[^>]+href="([^"]+)"[^>]*>/',
 			[$this, 'check_match'],
