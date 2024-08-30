@@ -285,6 +285,8 @@ class Subid {
 					} else {
 						$this->url = $this->url . '&subid=' . $subid;
 					}
+				} else {
+					$this->url = preg_replace( '/subid=\w*/', 'subid=' . $subid, $this->url, 1 );
 				}
 				break;
 			case 'traveldealz':
