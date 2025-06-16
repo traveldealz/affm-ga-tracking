@@ -37,35 +37,79 @@ add_filter( 'prli_target_url',  __NAMESPACE__ . '\save_prli_clickout', 110 );
 class AffM_Autolink {
 
 	public array $destinations = [];
+	public array $no_destinations = [];
 
 	public array $blocklist = [
 		'pvn.mediamarkt.de',
 		'pvn.saturn.de',
 	];
 
-	public function load_affm_destinations(): void {
-
-		if ( false === ( $destinations = get_transient( 'affm_destinations' ) ) ) {
-
-			$site_id = get_option('affm_site_id', 1);
-
-			$response = wp_remote_get( 'https://affm.travel-dealz.de/api/sites/' . $site_id . '/ads/destinations', [
-				'timeout' => 6,
-			] );
-
-			if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-				$this->destinations = ['error'];
-				return;
+	public function is_affm_destination( array $hosts ): bool {
+		foreach ($hosts as $host) {
+			if ( in_array($host, $this->destinations) ) {
+				return true;
 			}
-
-			$destinations = array_values((array) json_decode( $response['body'] ));
-
-			set_transient( 'affm_destinations', $destinations, 10 * MINUTE_IN_SECONDS );
-
 		}
 
-		$this->destinations =  array_flip((array) $destinations);
+		$hosts_not_found = [];
+		foreach ($hosts as $host) {
+			if ( false === in_array($host, $this->no_destinations) ) {
+				$is_all_no_destination = false;
+				$hosts_not_found[] = $host;
+			}
+		}
+		if (empty($hosts_not_found)) {
+			return false;
+		}
 
+		$hosts_to_query = [];
+		foreach ($hosts_not_found as $host) {
+			$destination = get_transient( 'affm_destination_' . $host );
+			if (false !== $destination) {
+				if ('no' === $destination) {
+					$this->no_destinations[] = $host;
+				} else {
+					$this->destinations[] = $destination;
+					return true;
+				}
+			} else {
+				$hosts_to_query[] = $host;
+			}
+		}
+
+		if (empty($hosts_to_query)) {
+			return false;
+		}
+
+		$site_id = get_option('affm_site_id', 1);
+
+		$response = wp_remote_get( 'https://affm.travel-dealz.de/api/sites/' . $site_id . '/ads/destinations?filter[destination]=' . urlencode(implode(',', $hosts_to_query)), [
+			'timeout' => 6,
+		] );
+
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			return true;
+		}
+
+		$destinations = array_values((array) json_decode( $response['body'] ));
+
+		foreach ($destinations as $destination) {
+			$this->destinations[] = $destination;
+			set_transient( 'affm_destination_' . $destination, $destination, 24 * 60 * MINUTE_IN_SECONDS );
+		}
+
+		foreach ($hosts_to_query as $host) {
+			if (false === in_array($host, $this->destinations)) {
+				$this->no_destinations[] = $host;
+				set_transient( 'affm_destination_' . $host, 'no', 60 * MINUTE_IN_SECONDS );
+			}
+		}
+
+		if (!empty($destinations)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public function check_link( string $url ): bool {
@@ -84,34 +128,22 @@ class AffM_Autolink {
 			return false;
 		}
 
-		if (! $this->destinations) {
-			$this->load_affm_destinations();
-		}
-
-		if ( isset( $this->destinations[$host] ) ) {
-			return true;
-		}
+		$hosts = [$host];
 
 		$host_parts = explode( '.', $host );
 
-		if ( 3 > count($host_parts) ) {
-			return false;
+		if ( 3 === count($host_parts) ) {
+			$hosts[] = $host_parts[count($host_parts) - 2] . '.' . $host_parts[count($host_parts) - 1];
 		}
 
-		$host_main = $host_parts[count($host_parts) - 2] . '.' . $host_parts[count($host_parts) - 1];
-
-		if ( isset( $this->destinations[$host_main] ) ) {
-			return true;
+		if ( 4 === count($host_parts)) {
+			$hosts[] = $host_parts[1] . '.' . $host_parts[2] . '.' . $host_parts[3];
 		}
 
-		if ( 4 === count($host_parts) && isset( $this->destinations[$host_parts[1] . '.' . $host_parts[2] . '.' . $host_parts[3]] ) ) {
-			return true;
-		}
-
-		return false;
+		return $this->is_affm_destination($hosts);
 	}
 
-	public function get_affm_url( string $url, string $referrer = null ): string {
+	public function get_affm_url( string $url, ?string $referrer = null ): string {
 		$site_id = get_option('affm_site_id', 1);
 		$referrer = $referrer ?: home_url( $_SERVER['REQUEST_URI'] );
 		return 'https://affm.travel-dealz.de/sites/' . $site_id . '/redirect?url=' . urlencode($url) . '&referrer=' .  urlencode( $referrer );
