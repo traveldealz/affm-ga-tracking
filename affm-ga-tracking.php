@@ -145,8 +145,14 @@ class AffM_Autolink {
 
 	public function get_affm_url( string $url, ?string $referrer = null ): string {
 		$site_id = get_option('affm_site_id', 1);
-		$referrer = $referrer ?: home_url( $_SERVER['REQUEST_URI'] );
-		return 'https://affm.travel-dealz.de/sites/' . $site_id . '/redirect?url=' . urlencode($url) . '&referrer=' .  urlencode( $referrer );
+		$url = 'https://affm.travel-dealz.de/sites/' . $site_id . '/redirect?url=' . urlencode($url);
+
+		$is_rest = defined( 'REST_REQUEST' ) && REST_REQUEST;
+		if ( false === $is_rest ) {
+			$referrer = $referrer ?: home_url( $_SERVER['REQUEST_URI'] );
+			$url .= '&referrer=' . urlencode( $referrer );
+		}
+		return 'https://affm.travel-dealz.de/sites/' . $site_id . '/redirect?url=' . urlencode($url);
 	}
 
 	public function check_match( array $match ): string {
