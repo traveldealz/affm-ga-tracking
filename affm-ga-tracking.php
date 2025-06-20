@@ -152,6 +152,7 @@ class AffM_Autolink {
 			$referrer = $referrer ?: home_url( $_SERVER['REQUEST_URI'] );
 			$url .= '&referrer=' . urlencode( $referrer );
 		}
+
 		return $url;
 	}
 
