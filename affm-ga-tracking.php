@@ -152,7 +152,7 @@ class AffM_Autolink {
 			$referrer = $referrer ?: home_url( $_SERVER['REQUEST_URI'] );
 			$url .= '&referrer=' . urlencode( $referrer );
 		}
-		return 'https://affm.travel-dealz.de/sites/' . $site_id . '/redirect?url=' . urlencode($url);
+		return $url;
 	}
 
 	public function check_match( array $match ): string {
