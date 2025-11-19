@@ -29,6 +29,7 @@ class Subid {
 		'pvn.saturn.de' => 'easyaffiliate',
 		'pvn.mediamarkt.de' => 'easyaffiliate',
 		'read.apartena.net' => 'easyaffiliate',
+		'aaa.artefact.com' => 'easyaffiliate',
 		'go.linkwi.se' => 'linkwise',
 		'track.effiliation.com' => 'effiliation',
 		'tracking.publicidees.com' => 'timeone',
