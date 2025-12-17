@@ -8,9 +8,6 @@
 			"url": "https://wpackagist.org"
 		}
 	],
-	"require": {
-		"composer/installers": "^1.9"
-	},
 	"license": "GPL-2.0+",
 	"authors": [{
 		"name": "Johannes Kinast",
